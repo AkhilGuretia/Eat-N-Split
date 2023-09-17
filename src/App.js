@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialFriends = [
   {
     id: 118836,
@@ -70,12 +72,36 @@ const Friends = ({ friend }) => {
 }
 
 const FormAddFriend = () => {
+
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("https://i.pravatar.cc/48");
+
+  const handleSubmitForm = (event) => {
+    event.preventDefault();
+
+    const id = crypto.randomUUID();
+
+    if (!name || !image) return;
+
+    const newFriend = {
+      id: id,
+      name: name,
+      image: `${image}?=${id}`,
+      balance: 0
+    };
+
+    console.log(newFriend);
+  }
+
   return (
-    <form className="form-add-friend">
+    <form className="form-add-friend" onSubmit={handleSubmitForm}>
       <label>👫 Friend's Name</label>
-      <input type="text" placeholder="Friend's name..." />
+      <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
+
       <label>🌄 Image</label>
-      <input type="text" />
+      <input type="text" value={image} onChange={(event) => setImage(event.target.value)} />
+
+      <Button>Add</Button>
     </form>
   );
 }
