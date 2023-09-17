@@ -22,12 +22,19 @@ const initialFriends = [
 ];
 
 const App = () => {
+
+  const [friends, setFriends] = useState(initialFriends);
+
+  const handleAddFriend = (newFriend) => {
+    setFriends([...friends, newFriend]);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendsList />
+        <FriendsList friends={friends} />
 
-        <FormAddFriend />
+        <FormAddFriend onAddFriend={handleAddFriend} />
 
         <Button>Add Friend</Button>
       </div>
@@ -44,10 +51,10 @@ const Button = ({ children }) => {
   );
 }
 
-const FriendsList = () => {
+const FriendsList = ({ friends }) => {
   return (
     <ul>
-      {initialFriends.map((friend) => (
+      {friends.map((friend) => (
         <Friends friend={friend} key={friend.id} />
       ))}
     </ul>
@@ -71,7 +78,7 @@ const Friends = ({ friend }) => {
   );
 }
 
-const FormAddFriend = () => {
+const FormAddFriend = ({ onAddFriend }) => {
 
   const [name, setName] = useState("");
   const [image, setImage] = useState("https://i.pravatar.cc/48");
@@ -90,7 +97,10 @@ const FormAddFriend = () => {
       balance: 0
     };
 
-    console.log(newFriend);
+    onAddFriend(newFriend);
+
+    setName("");
+    setImage("https://i.pravatar.cc/48");
   }
 
   return (
